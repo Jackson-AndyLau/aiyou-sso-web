@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.huazai.b2c.aiyou.pojo.TbUser;
 import com.huazai.b2c.aiyou.repo.AiyouResultData;
 import com.huazai.b2c.aiyou.service.TbUserService;
 
@@ -33,12 +34,21 @@ public class TbUserController
 	private TbUserService tbUserService;
 
 	@Description(value = "校验用户数据是否可用")
-	@RequestMapping(value = "/check/info/{param}/{type}", method = RequestMethod.POST)
+	@RequestMapping(value = "/check/info/{param}/{type}", method = RequestMethod.GET)
 	@ResponseBody
 	public AiyouResultData checkInUserData(@PathVariable(value = "param") String param,
 			@PathVariable(value = "type") Integer type)
 	{
 		AiyouResultData resultData = tbUserService.checkUserData(param, type);
+		return resultData;
+	}
+
+	@Description(value = "用户注册接口")
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@ResponseBody
+	public AiyouResultData register(TbUser tbUser)
+	{
+		AiyouResultData resultData = tbUserService.registerInfo(tbUser);
 		return resultData;
 	}
 
