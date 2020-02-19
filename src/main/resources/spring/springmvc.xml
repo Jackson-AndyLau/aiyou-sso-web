@@ -47,7 +47,7 @@
 		address="${single.zookeeper.baseUrl}" />
 
 	<!-- 应用调用远程服务接口 -->
-<!-- 	<dubbo:reference
-		interface="com.huazai.b2c.aiyou.service.TbDubboService"
-		id="tbDubboService" timeout="300000" /> -->
+	<dubbo:reference
+		interface="com.huazai.b2c.aiyou.service.TbUserService"
+		id="tbUserService" timeout="300000" />
 </beans>
