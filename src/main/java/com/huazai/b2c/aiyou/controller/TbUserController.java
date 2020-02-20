@@ -1,6 +1,10 @@
 package com.huazai.b2c.aiyou.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.huazai.b2c.aiyou.pojo.TbUser;
 import com.huazai.b2c.aiyou.repo.AiyouResultData;
 import com.huazai.b2c.aiyou.service.TbUserService;
+import com.huazai.b2c.aiyou.utils.CookieUtils;
 
 /**
  * 
@@ -32,6 +37,9 @@ public class TbUserController
 
 	@Autowired
 	private TbUserService tbUserService;
+	
+	@Value(value = "${AIYOU_TB_USER_COOKIE_TOKEN_KEY}")
+	private String AIYOU_TB_USER_COOKIE_TOKEN_KEY;
 
 	@Description(value = "校验用户数据是否可用")
 	@RequestMapping(value = "/check/info/{param}/{type}", method = RequestMethod.GET)
@@ -49,6 +57,20 @@ public class TbUserController
 	public AiyouResultData register(TbUser tbUser)
 	{
 		AiyouResultData resultData = tbUserService.registerInfo(tbUser);
+		return resultData;
+	}
+
+	@Description(value = "用户登录接口")
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public AiyouResultData login(String username, String password, HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		// 调用Service登录接口
+		AiyouResultData resultData = tbUserService.login(username, password);
+		// 获取 Token 并写入本地 cookie（需要跨域）
+		String token = resultData.getData().toString();
+		CookieUtils.setCookie(request, response, AIYOU_TB_USER_COOKIE_TOKEN_KEY, token);
 		return resultData;
 	}
 
