@@ -37,7 +37,7 @@ public class TbUserController
 
 	@Autowired
 	private TbUserService tbUserService;
-	
+
 	@Value(value = "${AIYOU_TB_USER_COOKIE_TOKEN_KEY}")
 	private String AIYOU_TB_USER_COOKIE_TOKEN_KEY;
 
@@ -71,6 +71,15 @@ public class TbUserController
 		// 获取 Token 并写入本地 cookie（需要跨域）
 		String token = resultData.getData().toString();
 		CookieUtils.setCookie(request, response, AIYOU_TB_USER_COOKIE_TOKEN_KEY, token);
+		return resultData;
+	}
+
+	@Description(value = "根据Token获取用户信息")
+	@RequestMapping(value = "/token/{token}")
+	@ResponseBody
+	public AiyouResultData getUserInfoByToken(@PathVariable(value = "token") String token)
+	{
+		AiyouResultData resultData = tbUserService.getUserInfoByToken(token);
 		return resultData;
 	}
 
