@@ -82,5 +82,14 @@ public class TbUserController
 		AiyouResultData resultData = tbUserService.getUserInfoByToken(token);
 		return resultData;
 	}
+	
+	@Description(value = "退出登录")
+	@RequestMapping(value = "/login_out",method = RequestMethod.POST)
+	@ResponseBody
+	public AiyouResultData loginOut(String token) {
+		AiyouResultData resultData = tbUserService.loginOut(token);
+		
+		return resultData;
+	}
 
 }
