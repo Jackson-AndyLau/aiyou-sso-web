@@ -3,9 +3,12 @@ package com.huazai.b2c.aiyou.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Description;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import com.huazai.b2c.aiyou.pojo.TbUser;
 import com.huazai.b2c.aiyou.repo.AiyouResultData;
 import com.huazai.b2c.aiyou.service.TbUserService;
 import com.huazai.b2c.aiyou.utils.CookieUtils;
+import com.huazai.b2c.aiyou.utils.JsonUtils;
 
 /**
  * 
@@ -75,20 +79,31 @@ public class TbUserController
 	}
 
 	@Description(value = "根据Token获取用户信息")
-	@RequestMapping(value = "/token/{token}")
+	@RequestMapping(value = "/token/{token}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public AiyouResultData getUserInfoByToken(@PathVariable(value = "token") String token)
+	public Object getUserInfoByToken(@PathVariable(value = "token") String token, String callback)
 	{
 		AiyouResultData resultData = tbUserService.getUserInfoByToken(token);
+		// 是否为跨域请求
+		if (StringUtils.isNotEmpty(callback))
+		{
+			// (4.1版本以前的写法)
+			String string = callback + "(" + JsonUtils.objectToJson(resultData) + ")";
+			// （4.1版本后支持这种写法）
+			MappingJacksonValue value = new MappingJacksonValue(resultData);
+			value.setJsonpFunction(callback);
+			return value;
+		}
 		return resultData;
 	}
-	
+
 	@Description(value = "退出登录")
-	@RequestMapping(value = "/login_out",method = RequestMethod.POST)
+	@RequestMapping(value = "/login_out", method = RequestMethod.POST)
 	@ResponseBody
-	public AiyouResultData loginOut(String token) {
+	public AiyouResultData loginOut(String token)
+	{
 		AiyouResultData resultData = tbUserService.loginOut(token);
-		
+
 		return resultData;
 	}
 
