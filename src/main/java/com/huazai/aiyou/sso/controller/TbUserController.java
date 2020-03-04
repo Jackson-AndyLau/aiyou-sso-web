@@ -1,4 +1,4 @@
-package com.huazai.b2c.aiyou.controller;
+package com.huazai.aiyou.sso.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.huazai.b2c.aiyou.pojo.TbUser;
-import com.huazai.b2c.aiyou.repo.AiyouResultData;
-import com.huazai.b2c.aiyou.service.TbUserService;
-import com.huazai.b2c.aiyou.utils.CookieUtils;
-import com.huazai.b2c.aiyou.utils.JsonUtils;
+import com.huazai.aiyou.common.response.AiyouResultData;
+import com.huazai.aiyou.common.utils.CookieUtils;
+import com.huazai.aiyou.common.utils.JsonUtils;
+import com.huazai.aiyou.sso.pojo.TbUser;
+import com.huazai.aiyou.sso.service.TbUserService;
 
 /**
  * 

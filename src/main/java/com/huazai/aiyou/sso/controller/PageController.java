@@ -1,4 +1,4 @@
-package com.huazai.b2c.aiyou.controller;
+package com.huazai.aiyou.sso.controller;
 
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;
